@@ -323,11 +323,9 @@ void Grapher2D::paintEvent(QPaintEvent *_pEvent)
 }
 
 
-/// Параметры системы координат
+/// ПАРАМЕТРЫ СИСТЕМЫ КООРДИНАТ
 
-
-/// Отображаемые координатные углы
-
+/// Установка отображаемых координатных углов
 bool Grapher2D::setCSAngles(bool _first, bool _second, bool _third, bool _fourth)
 {
     bool temp[4];
@@ -363,151 +361,56 @@ bool Grapher2D::setCSAngles(bool _first, bool _second, bool _third, bool _fourth
     }
 }
 
-bool *Grapher2D::getCSAngles()
+
+/// ПАРАМЕТРЫ ОСИ АБСЦИСС
+
+/// Установка количества единиц измерения в одном делении оси абсцисс
+bool Grapher2D::setCSAbsMeasure(float _measure)
 {
-    return coordSystem.angles;
-}
-
-/// Смещение системы координат
-
-float Grapher2D::getCSAbsTranslate()
-{
-    return width() / 2.0 + coordSystem.abs.shift;
-}
-
-float Grapher2D::getCSOrdTranslate()
-{
-    return height() / 2.0 + coordSystem.ord.shift;
-}
-
-/// Масштаб системы координат
-
-float Grapher2D::getCSAbsScale()
-{
-    return coordSystem.zoom.value * coordSystem.abs.expansion / coordSystem.abs.measure;
-}
-
-float Grapher2D::getCSOrdScale()
-{
-    return - coordSystem.zoom.value * coordSystem.ord.expansion / coordSystem.ord.measure;
-}
-
-
-/// Параметры координатных осей
-
-
-/// Сдвиг по оси абсцисс
-
-void Grapher2D::setCSAbsShift(float _shift)
-{
-    coordSystem.abs.shift = _shift;
-}
-
-float Grapher2D::getCSAbsShift()
-{
-    return coordSystem.abs.shift;
-}
-
-/// Сдвиг по оси ординат
-
-void Grapher2D::setCSOrdShift(float _shift)
-{
-    coordSystem.ord.shift = _shift;
-}
-
-float Grapher2D::getCSOrdShift()
-{
-    return coordSystem.ord.shift;
-}
-
-/// Количество единиц измерения в одном делении
-
-bool Grapher2D::setCSAxisMeasure(float _abs, float _ord)
-{
-    if(_abs < 1.0 || _ord < 1.0)
+    if(_measure < 1.0)
         return false;
 
-    coordSystem.abs.measure = _abs;
-    coordSystem.ord.measure = _ord;
-
+    coordSystem.abs.measure = _measure;
     return true;
 }
 
-float Grapher2D::getCSAbsMeasure()
+/// Установка параметра растяжения оси абсцисс
+bool Grapher2D::setCSAbsExpansion(float _expansion)
 {
-    return coordSystem.abs.measure;
-}
-
-float Grapher2D::getCSOrdMeasure()
-{
-    return coordSystem.ord.measure;
-}
-
-/// Растяжение осей
-
-bool Grapher2D::setCSAxisExpansion(float _abs, float _ord)
-{
-    if(_abs < 1.0 || _ord < 1.0)
+    if(_expansion < 1.0)
         return false;
 
-    coordSystem.abs.expansion = _abs;
-    coordSystem.ord.expansion = _ord;
-
+    coordSystem.abs.expansion = _expansion;
     return true;
 }
 
-float Grapher2D::getCSAbsExpansion()
+
+/// ПАРАМЕТРЫ ОСИ ОРДИНАТ
+
+/// Установка количества единиц измерения в одном делении оси ординат
+bool Grapher2D::setCSOrdMeasure(float _measure)
 {
-    return coordSystem.abs.expansion;
+    if(_measure < 1.0)
+        return false;
+
+    coordSystem.ord.measure = _measure;
+    return true;
 }
 
-float Grapher2D::getCSOrdExpansion()
+/// Установка параметра растяжения оси ординат
+bool Grapher2D::setCSOrdExpansion(float _expansion)
 {
-    return coordSystem.ord.expansion;
-}
+    if(_expansion < 1.0)
+        return false;
 
-/// Отображение цифровых значений
-
-void Grapher2D::setCSAxisValues(bool _abs, bool _ord)
-{
-    coordSystem.abs.values = _abs;
-    coordSystem.ord.values = _ord;
-}
-
-bool Grapher2D::isCSAbsValues()
-{
-    return coordSystem.abs.values;
-}
-
-bool Grapher2D::isCSOrdValues()
-{
-    return coordSystem.ord.values;
-}
-
-/// Отображение пунктирных линий
-
-void Grapher2D::setCSAxisDashLines(bool _abs, bool _ord)
-{
-    coordSystem.abs.dashLines = _abs;
-    coordSystem.ord.dashLines = _ord;
-}
-
-bool Grapher2D::isCSAbsDashLines()
-{
-    return coordSystem.abs.dashLines;
-}
-
-bool Grapher2D::isCSOrdDashLines()
-{
-    return coordSystem.ord.dashLines;
+    coordSystem.ord.expansion = _expansion;
+    return true;
 }
 
 
-/// Параметры зумирования
+/// ПАРАМЕТРЫ ЗУМИРОВАНИЯ
 
-
-/// Количество пикселей в одном делении
-
+/// Установка количества пикселей в одном делении
 bool Grapher2D::setCSZoom(int _zoom)
 {
     if(_zoom < coordSystem.zoom.min || _zoom > coordSystem.zoom.max)
@@ -518,13 +421,7 @@ bool Grapher2D::setCSZoom(int _zoom)
     return true;
 }
 
-int Grapher2D::getCSZoom()
-{
-    return coordSystem.zoom.value;
-}
-
-/// Нижняя граница зумирования
-
+/// Установка нижней границы зумирования
 bool Grapher2D::setCSZoomMin(int _zoomMin)
 {
     if(_zoomMin < 1 || _zoomMin > 100 || _zoomMin > coordSystem.zoom.max)
@@ -535,13 +432,7 @@ bool Grapher2D::setCSZoomMin(int _zoomMin)
     return true;
 }
 
-int Grapher2D::getCSZoomMin()
-{
-    return coordSystem.zoom.min;
-}
-
-/// Верхняя граница зумирования
-
+/// Установка верхней границы зумирования
 bool Grapher2D::setCSZoomMax(int _zoomMax)
 {
     if(_zoomMax < 10 || _zoomMax > 1000 || _zoomMax < coordSystem.zoom.min)
@@ -552,13 +443,7 @@ bool Grapher2D::setCSZoomMax(int _zoomMax)
     return true;
 }
 
-int Grapher2D::getCSZoomMax()
-{
-    return coordSystem.zoom.max;
-}
-
-/// Шаг изменения зума
-
+/// Установка шага изменения зума
 bool Grapher2D::setCSZoomStep(int _zoomStep)
 {
     if(_zoomStep < 1 || _zoomStep > 10)
@@ -569,56 +454,7 @@ bool Grapher2D::setCSZoomStep(int _zoomStep)
     return true;
 }
 
-int Grapher2D::getCSZoomStep()
-{
-    return coordSystem.zoom.step;
-}
-
-/// Зумирование относительно центра системы координат
-
-void Grapher2D::setCSZoomCenter(bool _zoomCenter)
-{
-    coordSystem.zoom.center = _zoomCenter;
-}
-
-bool Grapher2D::isCSZoomCenter()
-{
-    return coordSystem.zoom.center;
-}
-
-
-/// Параметры курсора мыши
-
-
-/// Последняя позиция курсора мыши при нажатии
-
-QPoint Grapher2D::getMPosClick()
-{
-    return mouse.pos.click;
-}
-
-/// Последняя позиция курсора мыши без нажатия
-
-QPoint Grapher2D::getMPosNoClick()
-{
-    return mouse.pos.noClick;
-}
-
-/// Текущий тип курсора
-
-void Grapher2D::setMCursorShape(Qt::CursorShape _cursorShape)
-{
-    mouse.cursorShape = _cursorShape;
-}
-
-Qt::CursorShape Grapher2D::getMCursorShape()
-{
-    return mouse.cursorShape;
-}
-
-
 /// Смещение системы координат
-
 void Grapher2D::translocationCoordinateSystem()
 {
     if(!coordSystem.angles[0] && !coordSystem.angles[1] &&
